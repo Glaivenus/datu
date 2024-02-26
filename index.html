@@ -15,14 +15,18 @@
   .ds img { width: 200px; height: 200px; }
   .dd{background-color: #3E8F3E;}
   .dc{background-color: #AC2925;}
+
+  .info-text {
+    font-size: 50px; 
+  }
  </style>
 </head>
 <body>
 
 <div id="app">
-  <div>倒计时{{ t }}</div>
-  <div>分数{{ fs }}</div>
-  <div v-if="t <= 0">游戏结束</div>
+  <div class="info-text">倒计时{{ t }}</div>
+  <div class="info-text">分数{{ fs }}</div>
+  <div class="info-text" v-if="t <= 0">游戏结束</div>
   <div id="main">
     <div class="ds" v-for="v in x * y" :key="v">
       <img v-if="arr1.includes(v-1)" :src="arr2[arr1.indexOf(v-1)] == 1 ? getRandomImage(arr1Images) : getRandomImage(arr2Images)" @click="da(v-1)" />
