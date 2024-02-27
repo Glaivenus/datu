@@ -7,7 +7,9 @@
   <script src="https://unpkg.com/vue@3/dist/vue.global.js"></script>
 <style type="text/css">
   *{margin: 0;padding: 0;}
-  
+  body {
+    background-color: rgb(152, 219, 50);
+  }
   #main{border: 1px solid #000;}
   .ds{ float: left;
     /* border: 1px solid #000; */
@@ -19,6 +21,18 @@
   .info-text {
     font-size: 50px; 
   }
+
+
+  @media (max-width: 600px) {
+  .ds {
+    width: 50px; /* 或根据屏幕大小调整 */
+    height: 50px; /* 或根据屏幕大小调整 */
+  }
+  .info-text {
+    font-size: 20px; /* 在小屏幕上减小字号 */
+  }
+}
+
  </style>
 </head>
 <body>
@@ -29,9 +43,20 @@
   <div class="info-text" v-if="t <= 0">游戏结束</div>
   <div id="main">
     <div class="ds" v-for="v in x * y" :key="v">
-      <img v-if="arr1.includes(v-1)" :src="arr2[arr1.indexOf(v-1)] == 1 ? getRandomImage(arr1Images) : getRandomImage(arr2Images)" @click="da(v-1)" />
-      <img v-else :src="holeImage" @click="da(v-1)" />
+      <img v-if="arr1.includes(v-1)"
+      :src="arr2[arr1.indexOf(v-1)] == 1 ? getRandomImage(arr1Images) : getRandomImage(arr2Images)"
+      @click="da(v-1, $event)"
+      @touchend.prevent="da(v-1, $event)" /> 
+ <img v-else
+      :src="holeImage"
+      @click="da(v-1, $event)"
+      @touchend.prevent="da(v-1, $event)" />
+ 
     </div>
+    
+
+
+
   </div>
   
   
@@ -60,16 +85,19 @@
     },
     methods: {
   // 处理地鼠点击事件
-  da(i) {
+  da(i,event) {
     // 确保游戏状态为“开始”时才处理点击
     if (this.ys) {
       // 检查是否点击的是地鼠位置
       if (this.arr1.includes(i)) {
         // 根据地鼠类型更新分数
         if (this.arr2[this.arr1.indexOf(i)] === 1) {
-          this.fs++; // 对应 arr1Images 中的地鼠，加分
+          this.fs++; // 加分
+          console.log('+'+this.arr1.includes(i))
         } else {
-          this.fs--; // 对应 arr2Images 中的地鼠，减分
+          this.fs--; // 减分
+          console.log('-'+this.arr1.includes(i))
+
         }
         // 防止重复点击同一地鼠
         const index = this.arr1.indexOf(i);
